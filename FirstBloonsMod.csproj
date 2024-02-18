@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>FirstBloonsMod</RootNamespace>
+        <Configurations>Debug;Release</Configurations>
+        <Nullable>enable</Nullable>
+        <AssemblyName>FirstBloonsMod</AssemblyName>
+        <LangVersion>latest</LangVersion>
+        <Optimize>False</Optimize>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+	<!-- PropertyGroup to define possible Documents folder paths -->
+	<PropertyGroup>
+		<!--C:\Users\caleb\OneDrive\Documents-->
+		<DocumentsPath Condition="Exists('$(USERPROFILE)\Documents')">$(USERPROFILE)\Documents</DocumentsPath>
+		<DocumentsPath Condition="Exists('$(USERPROFILE)\My Documents')">$(USERPROFILE)\My Documents</DocumentsPath>
+		<DocumentsPath Condition="Exists('$(USERPROFILE)\OneDrive\Documents')">$(USERPROFILE)\OneDrive\Documents</DocumentsPath>
+		<DocumentsPath Condition="Exists('$(USERPROFILE)\OneDrive\My Documents')">$(USERPROFILE)\OneDrive\My Documents</DocumentsPath>
+		<!-- Add more conditions here for other common paths or custom environment variables -->
+	</PropertyGroup>
+    <ItemGroup>
+        <Content Include=".github\workflows\build.yml" />
+    </ItemGroup>
+	<!-- Use the determined DocumentsPath to import the .targets file -->
+	<Import Project="$(DocumentsPath)\BTD6 Mod Sources\btd6.targets" Condition="Exists('$(DocumentsPath)\BTD6 Mod Sources\btd6.targets')" />
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="copy &quot;$(TargetDir)$(TargetFileName)&quot; &quot;D:\SteamLibrary\steamapps\common\BloonsTD6\Mods&quot; /y" />
+	</Target>
+	<!--<Import Project="C:\Users\caleb\OneDrive\Documents\BTD6 Mod Sources\btd6.targets" />-->
+</Project>
